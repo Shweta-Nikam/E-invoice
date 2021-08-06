@@ -1,0 +1,17 @@
+.register{
+    width: 500px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 5%;
+}
+.btn-primary{
+    /* background-color: linear-gradient(135deg, rgb(255, 164, 2) 1%, rgb(254, 94, 171) 100%) !important; */
+
+        background-image: linear-gradient(to right, rgb(255, 164, 2) 1%, rgb(254, 94, 171) 100%);
+      }
+
+.login{
+    text-align: center;
+    padding: 10px;
+}

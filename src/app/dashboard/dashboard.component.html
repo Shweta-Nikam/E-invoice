@@ -1,0 +1,17 @@
+<div class="container username">
+    Hi
+    <div class="button" style="float: right;">
+        <button><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Logout</a></button>
+
+    </div>
+</div>
+<div class="container uploadfile">
+    <form [formGroup]="uploadForm">
+        <div>
+            <input type="file" name="document" class="form-control" (change)="onFileSelect($event)" />
+        </div>
+        <div>
+            <!-- <button type="submit">Upload</button> -->
+        </div>
+    </form>
+</div>
