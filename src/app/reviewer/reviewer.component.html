@@ -1,0 +1,24 @@
+<div class="container register">
+    <div class="auth-wrapper">
+        <form name="registerForm" (ngSubmit)="onClickSubmit(registerForm.value)" [formGroup]="registerForm" novalidate>
+            <h3 class="h3 mb-3 font-weight-normal text-center">Register</h3>
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" formControlName="name" placeholder="Enter name" required>
+            </div>
+            <div class="form-group">
+                <label>Email address</label>
+                <input type="email" class="form-control" formControlName="email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" formControlName="password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-block btn-primary">Register</button>
+            <div class="login">
+                <span class="text">Already have an account?</span>
+                <a href="/login">Login</a>
+            </div>
+        </form>
+    </div>
+</div> 

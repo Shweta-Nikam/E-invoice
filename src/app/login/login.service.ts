@@ -16,13 +16,14 @@ export class LoginService {
   constructor(private http: HttpClient,public router: Router) { }
 
   login(email: any, password: any) {
-    debugger;
     return this.http.post<any>(this.baseUrl + '/user/signin', { email: email, password: password })
       .pipe(map((user: any) => {
+        // debugger;
         if (user && user.error == false) {
-          localStorage.setItem('access_token', user.token)
+          localStorage.setItem('token', user.token)
+          localStorage.setItem('userType',user.userType)
           this.currentUser = user;
-          console.log(this.currentUser);
+          // console.log(this.currentUser);
         return user;
 
         }
@@ -35,18 +36,22 @@ export class LoginService {
   }
 
   getToken() {
-    return localStorage.getItem('access_token');
+    return localStorage.getItem('token');
+  }
+
+  getUserType(){
+    return localStorage.getItem('userType');
   }
 
   isLoggedIn(): boolean {
-    let authToken = localStorage.getItem('access_token');
+    let authToken = localStorage.getItem('token');
     return (authToken !== null) ? true : false;
   }
 
   doLogout() {
-    let removeToken = localStorage.removeItem('access_token');
+    let removeToken = localStorage.removeItem('token');
     if (removeToken == null) {
-      this.router.navigate(['log-in']);
+      this.router.navigate(['login']);
     }
   }
 

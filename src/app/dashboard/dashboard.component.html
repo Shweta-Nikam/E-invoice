@@ -1,7 +1,7 @@
 <div class="container username">
     Hi
     <div class="button" style="float: right;">
-        <button><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Logout</a></button>
+        <button><a (click)="logout()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></button>
 
     </div>
 </div>
@@ -11,7 +11,44 @@
             <input type="file" name="document" class="form-control" (change)="onFileSelect($event)" />
         </div>
         <div>
-            <!-- <button type="submit">Upload</button> -->
+            <button type="submit" (click)="getAllDocuments()">Show All</button>
         </div>
     </form>
+</div>
+<!-- {{document.name}} -->
+<div class="container documentList">
+    <table>
+        <tr>
+            <th>Sr.No.</th>
+            <th>Filename</th>
+            <th>Action</th>
+        </tr>
+        <tr *ngFor="let doc of documents;let i=index">
+          <td>{{ i }}</td>
+          <td>{{doc.name }}</td>
+          <td>
+              <div class="row">
+                  <div class="col-md-4">
+                    <input type="file" 
+                    name="document" class="form-control" (change)="onFileupdate($event,i)" />
+                  </div>
+                  <div class="col-md-3">
+                    <button class="badge badge-danger mr-2"> 
+                    Update
+                        </button>
+                  </div>
+                  <div class="col-md-4">
+                    <button class="badge badge-danger mr-2" >
+                        Delete
+                      </button>
+                  </div>
+              </div>
+            <!-- (click)="UpdateFile()"
+            (click)="deleteFile()" -->
+            <!-- 
+             
+              (click)="deleteFile(i)" -->
+          </td>
+        </tr>
+      </table>
 </div>

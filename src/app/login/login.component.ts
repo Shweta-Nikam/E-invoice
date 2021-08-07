@@ -48,14 +48,14 @@ export class LoginComponent implements OnInit {
     this.loginService.login(data.email, data.password)
       .subscribe(
         (userdata:any) => {
-          debugger;
           this.currentUser =this.userdata;
           if(userdata && userdata.token){
-            localStorage.setItem('token',JSON.stringify(userdata.token));
+            localStorage.setItem('token',userdata.token);
+            localStorage.setItem('userType',userdata.userType)
           this.isLoggedin = true;
           }
-         console.log(this.currentUser);
-         console.log(this.isLoggedin);
+        //  console.log(this.userdata);
+        //  console.log(this.isLoggedin);
           alert("Login Successfully");
           this.router.navigate(['/dashboard']);
         },

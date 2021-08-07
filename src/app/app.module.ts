@@ -9,10 +9,11 @@ import { RegistrationComponent } from './registration/registration.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthConfigInterceptor } from './auth-config.interceptor';
+import { ReviewerComponent } from './reviewer/reviewer.component';
 
 @NgModule({
   declarations: [
-    AppComponent,LoginComponent,RegistrationComponent, DashboardComponent, NavbarComponent
+    AppComponent,LoginComponent,RegistrationComponent, DashboardComponent, NavbarComponent, ReviewerComponent
   ],
   imports: [
     BrowserModule,

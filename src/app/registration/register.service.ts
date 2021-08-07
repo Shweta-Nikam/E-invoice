@@ -11,9 +11,9 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  register(name: any,email: any,password: any) {
-    debugger;
-    return this.http.post<any>(this.baseUrl + '/user/signup', { name:name,email: email, password: password })
+  register(name: any,email: any,password: any, userType:any) {
+    // debugger;
+    return this.http.post<any>(this.baseUrl + '/user/signup', { name:name,email: email, password: password, userType:userType })
       .pipe(map(user => {
         return user;
       }),
