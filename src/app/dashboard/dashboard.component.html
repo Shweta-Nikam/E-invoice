@@ -1,11 +1,16 @@
-<div class="container username">
-    Hi
+<!-- <div class="container username">
     <div class="button" style="float: right;">
         <button><a (click)="logout()"><span class="glyphicon glyphicon-log-in"></span> Logout</a></button>
 
     </div>
+</div> -->
+
+<div class="container">
+    <div>
+        <button type="submit" (click)="addNewFile()">Add New</button>
+    </div>
 </div>
-<div class="container uploadfile">
+<!-- <div class="container uploadfile">
     <form [formGroup]="uploadForm">
         <div>
             <input type="file" name="document" class="form-control" (change)="onFileSelect($event)" />
@@ -14,41 +19,110 @@
             <button type="submit" (click)="getAllDocuments()">Show All</button>
         </div>
     </form>
-</div>
+</div> -->
 <!-- {{document.name}} -->
 <div class="container documentList">
     <table>
         <tr>
             <th>Sr.No.</th>
-            <th>Filename</th>
+            <th>FileName</th>
+            <th>Path</th>
+            <th>Status</th>
+
             <th>Action</th>
         </tr>
         <tr *ngFor="let doc of documents;let i=index">
-          <td>{{ i }}</td>
-          <td>{{doc.name }}</td>
-          <td>
-              <div class="row">
-                  <div class="col-md-4">
-                    <input type="file" 
-                    name="document" class="form-control" (change)="onFileupdate($event,i)" />
-                  </div>
-                  <div class="col-md-3">
-                    <button class="badge badge-danger mr-2"> 
-                    Update
+            <td>{{ i+1 }}</td>
+            <td>{{doc.filename }} </td>
+            <td>{{doc.file}}</td>
+            <td>{{doc.status}}</td>
+
+            <td>
+                <div class="row buttons">
+                    <!-- <input style="display: none" type="file" (change)="onFileupdate($event,doc._id)" #hiddenfileinput>
+                    <button (click)="hiddenfileinput.click()" class="button">
+                        Update</button> -->
+                        <button class="button view" (click)="showFile(doc)">
+                            View
                         </button>
-                  </div>
-                  <div class="col-md-4">
-                    <button class="badge badge-danger mr-2" >
+
+                    <button type="button" class="button" data-toggle="modal" data-target="#exampleModal"
+                        (click)="showModal(i)">
+                        Update
+                    </button>
+
+                    <button class="button del" (click)="deleteFile(doc._id)">
                         Delete
-                      </button>
-                  </div>
-              </div>
-            <!-- (click)="UpdateFile()"
-            (click)="deleteFile()" -->
-            <!-- 
-             
-              (click)="deleteFile(i)" -->
-          </td>
+                    </button>
+                </div>
+
+            </td>
+
+            <div class="overlay" *ngIf="showFileModal">
+                <div class="popup">
+                    <!-- <a class="close" (click)="showFileModal = false">&times;</a> -->
+                   <div class="container">
+                       <div class="row" style="display: inline-flex;">
+                           <div>
+                               FileName:
+                           </div>
+                           <div style="font-weight: bold;">
+                            {{doc.filename}}
+                        </div>
+                       </div>
+                   </div>
+                       <div class="container">
+
+                       <div class="row" style="display: inline-flex;" >
+                        <div>
+                            Path:
+                        </div>
+                        <div style="font-weight: bold;">
+                         {{doc.file}}
+                     </div>
+                    </div>
+                   </div>
+                     <button class="button del" (click)="showFileModal = false">
+                        Cancel
+                    </button> 
+                </div>
+            </div>
+            <!-- -----Modal------ -->
+            <div class="modal" [class.showModal]="showModal" id="exampleModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form  [formGroup]="uploadForm" >
+                                <div class="name">
+                                    <label for="name">Name</label>
+                                    <input id="name" name="filename" formControlName="filename2" type="text" class="form-control">
+                                </div>
+                            
+                                <div class="fileselect">
+                                    <label for="file">File</label>
+                                    <input id="file" type="file" formControlName="file" class="form-control" (change)="onFileupdate($event,doc._id)"  >
+                                </div>
+                            
+                                <!-- <button class="btn btn-primary submitfile" >Submit</button> -->
+                            </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                (click)="showModal(i)">Close</button>
+                            <button type="button" class="btn btn-primary" (click)="UpdateFile(doc._id,doc)">Save
+                                changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </tr>
-      </table>
+    </table>
 </div>

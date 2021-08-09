@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginService } from '../login/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,18 +9,30 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 @Input() isloggedin: any;
-  constructor( public router: Router) { }
+ show:Boolean=true;
+  constructor( public router: Router,private loginService: LoginService) { }
 
   ngOnInit(): void {
+  this.loginService.headerManage.subscribe(res=> {
+    let token= localStorage.getItem('token');
+    if(token){
+      this.show=false;
+    }
+    else{
+      this.show = true;
+    }
+  })
   }
-  // logout(){
-  //   localStorage.clear(); 
-  //   localStorage.removeItem('currentUser');
-  //   const isLoggedin = false;
-  //   this.router.navigate(['/login'])
-  // .then(() => {
-  //   window.location.reload();
-  // });
-  // }
 
+  login(){
+    this.router.navigate(['login']);
+  }
+
+  logout() {
+    let removeToken = localStorage.removeItem('token');
+    this.loginService.headerManage.next(true);
+    if (removeToken == null) {
+      this.router.navigate(['login']);
+    }
+  }
 }

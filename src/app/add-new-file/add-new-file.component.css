@@ -1,0 +1,10 @@
+.fileupload{
+    width: 500px;
+    border: 1px solid rgb(129, 125, 125);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 5%;
+}
+.name,.fileselect,.submitfile{
+    margin-bottom: 10px;
+}

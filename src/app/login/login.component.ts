@@ -51,16 +51,25 @@ export class LoginComponent implements OnInit {
           this.currentUser =this.userdata;
           if(userdata && userdata.token){
             localStorage.setItem('token',userdata.token);
-            localStorage.setItem('userType',userdata.userType)
+            localStorage.setItem('userType',userdata.result.userType)
           this.isLoggedin = true;
+          this.loginService.headerManage.next(true);
           }
         //  console.log(this.userdata);
         //  console.log(this.isLoggedin);
-          alert("Login Successfully");
+          // alert("Login Successfully");
+          let getToken = localStorage.getItem('token');
+          let getuserType = localStorage.getItem('userType');
+      
+          if (getToken && getuserType == "requester") {
           this.router.navigate(['/dashboard']);
+          }
+          if (getToken && getuserType == "reviewer") {
+            this.router.navigate(['/updateStatus']);
+          }
         },
         (error) => {
-          alert(error.error.message);
+          // alert(error.error.message);
         });
 }
 }

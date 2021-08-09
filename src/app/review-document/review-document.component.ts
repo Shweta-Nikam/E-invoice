@@ -1,36 +1,36 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LoginService } from '../login/login.service';
-import { UploadDocumentService } from './upload-document.service';
+import { UploadDocumentService } from '../dashboard/upload-document.service';
+import { StatusUpdateService } from '../dashboard/status-update.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-review-document',
+  templateUrl: './review-document.component.html',
+  styleUrls: ['./review-document.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class ReviewDocumentComponent implements OnInit {
   uploadForm: FormGroup;
   baseUrl: string = environment.baseurl;
   token: string = '';
   userType: string = '';
   documents: any = [];
-  showModal1:boolean=false;
-  showFileModal:boolean=false;
   name: string = '';
   selectedIndex: any = null;
   document: Document;
-  doc:any;
+  popup = false;
+  idStatus:any;
+
   constructor(public router: Router, private fb: FormBuilder, private http: HttpClient,
-    private uploadDoc: UploadDocumentService, private loginservice: LoginService) {
+    private uploadDoc: UploadDocumentService, private loginservice: LoginService,
+    private statusUpdate:StatusUpdateService) {
     this.uploadForm = this.fb.group({
       document: new FormControl('', [Validators.required, Validators.minLength(3)]),
       file: new FormControl('', [Validators.required]),
-      filename2: new FormControl('', [Validators.required]),
-
     });
     this.documents = new Array<Document>();
     this.document = new Document();
@@ -41,8 +41,6 @@ export class DashboardComponent implements OnInit {
     this.uploadForm = this.fb.group({
       document: new FormControl('', [Validators.required, Validators.minLength(3)]),
       file: new FormControl('', [Validators.required]),
-      filename2: new FormControl('', [Validators.required]),
-
     });
   }
 
@@ -61,7 +59,7 @@ export class DashboardComponent implements OnInit {
   //     });
   //   }
   // }
-  
+
   // onSubmit(file: any) {
   //   const formData = new FormData();
   //   formData.append('document', file);
@@ -81,7 +79,7 @@ export class DashboardComponent implements OnInit {
           document => {
             this.documents = document;
             this.name = document.name;
-            this.userType= document.userType;
+            this.userType = document.userType;
           },
           error => {
             // console.log(error);
@@ -93,7 +91,7 @@ export class DashboardComponent implements OnInit {
           document => {
             this.documents = document;
             this.name = document.name;
-            this.userType= document.userType;
+            this.userType = document.userType;
 
             // console.log(document);
           },
@@ -123,69 +121,53 @@ export class DashboardComponent implements OnInit {
   onFileupdate(event: any, id: number) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      const filename = this.uploadForm.value.filename2;
-      // const name = event.target.filename;
-      this.UpdateFile(id,file);
+      // this.UpdateFile(file, id);
       this.uploadForm.patchValue({
         fileSource: file
       });
     }
   }
 
-  UpdateFile(id:any,file: any) {
-    const formData = new FormData();
-    formData.append('document', this.uploadForm.value.document);
-    formData.append('filename', this.uploadForm.value.filename2)
-    const name= this.uploadForm.value.filename2;
-    let getToken = localStorage.getItem('token');
-    if (getToken) {
-      this.uploadDoc.updateFile(id,formData,name).subscribe((document:any) => {
-        console.log(document);
-        this.documents[this.selectedIndex].filename=name;
-        this.documents[this.selectedIndex].file=this.uploadForm.value.file;
-        this.getAllDocuments();
-        this.showModal1 = !this.showModal1;
-      },
-        (error) => {
-        });
-    }
-  }
-
-// -----show update modal--------
-showModal(index:number){
-  this.selectedIndex = index;
-  this.showModal1 = !this.showModal1;
-
-}
-
-
-getDocument(id:any){
-  let getToken = localStorage.getItem('token');
-  let getuserType = localStorage.getItem('userType');
-
-  if (getToken) {
-    this.uploadDoc.getDocument(id)
-      .subscribe(
-        document => {
-          this.documents = document;
-          this.name = document.name;
-          this.userType= document.userType;
-        },
-        error => {
-          // console.log(error);
-        });
-  }
-}
-showFile(file:any){
-  // this.getDocument(id);
-  this.doc=file;
-  this.showFileModal = !this.showFileModal;
-}
-  // logout() {
-  //   let removeToken = localStorage.removeItem('token');
-  //   if (removeToken !== null) {
-  //     this.router.navigate(['login']);
+  // UpdateFile(file: any, id: number) {
+  //   const formData = new FormData();
+  //   formData.append('document', file);
+  //   let getToken = localStorage.getItem('token');
+  //   if (getToken) {
+  //     this.uploadDoc.updateFile(formData, id).subscribe((document) => {
+  //       console.log(document);
+  //       this.getAllDocuments();
+  //       // alert("document upload successfully");
+  //     },
+  //       (error) => {
+  //         // alert(error.error.message);
+  //       });
   //   }
+  //   this.documents.push(this.documents);
+  //   this.document = new Document();
   // }
+
+
+  openPopoup(id:any){
+   this.idStatus= id;
+   this.popup = true;
+  }
+
+  statusApprove(){
+const formData = new FormData();
+
+let getToken = localStorage.getItem('token');
+if (getToken) {
+    this.statusUpdate.updateStatus(this.idStatus).subscribe(res =>{
+      alert("Document Approved !");
+      status= res.status;
+      this.getAllDocuments();
+
+      return this.document;
+    },
+    (error) => {
+      // alert(error.error.message);
+    });   this.popup = false;
+  }
 }
 
+}

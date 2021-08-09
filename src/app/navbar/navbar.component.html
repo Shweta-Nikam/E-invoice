@@ -10,20 +10,23 @@
         </li>
       </ul>
     </div>
-    <ul class="nav navbar-nav navbar-right">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          SignUp
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a routerLink="register/requester">Requester</a>
-          <a routerLink="register/reviewer">Reviewer</a>
-        </div>
+    <ul class="nav navbar-nav navbar-right navbarhead" >
+
+      <div *ngIf="show" class="dropdown" style="margin-right: 10px;">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">SignUp
+          <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a routerLink="register/requester">Requester</a></li>
+          <li><a routerLink="register/reviewer">Reviewer</a></li>
+        </ul>
+
       </div>
-      <!-- <li><a routerLink="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
-      <li><a routerLink="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      <!-- <li *ngIf=[isloggedin]><a routerLink="login"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li> -->
+      <button *ngIf="show" class="btn btn-default dropdown-toggle" type="button" (click)="login()">
+          Login
+      </button>
+      <button *ngIf="!show" class="btn btn-default dropdown-toggle" type="button" (click)="logout()">
+        Logout
+    </button>
     </ul>
   </div>
 </nav>

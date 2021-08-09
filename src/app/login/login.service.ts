@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class LoginService {
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   // isLoggedIn: boolean;
-
+  headerManage = new BehaviorSubject(false);
   constructor(private http: HttpClient,public router: Router) { }
 
   login(email: any, password: any) {

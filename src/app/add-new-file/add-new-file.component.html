@@ -1,0 +1,15 @@
+<div class="container fileupload">
+    <form  [formGroup]="uploadForm" >
+        <div class="name">
+            <label for="name">Name</label>
+            <input id="name" name="filename" formControlName="filename" type="text" class="form-control">
+        </div>
+    
+        <div class="fileselect">
+            <label for="file">File</label>
+            <input id="file" type="file" formControlName="file" class="form-control" (change)="onFileSelect($event)"  >
+        </div>
+    
+        <button class="btn btn-primary submitfile" [disabled]="!uploadForm.valid"  (click)="onuploadFile()">Submit</button>
+    </form>
+</div>

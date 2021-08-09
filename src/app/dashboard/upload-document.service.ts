@@ -16,8 +16,6 @@ export class UploadDocumentService {
   }
   constructor(private http: HttpClient) { }
   uploadFile(file: any) {
-    // console.log(file);
-
     return this.http.post<any>(this.baseUrl + '/document/', file)
       .pipe(map((document: any) => {
         return document;
@@ -29,9 +27,17 @@ export class UploadDocumentService {
 
 
   getRequesterDocument() {
-    debugger;
     return this.http.get<any>(this.baseUrl + '/document/user-document').pipe(map((document: any) => {
-      alert("documents fetched");
+      // alert("documents fetched");
+      return document;
+    }),
+      catchError(this.handleError)
+    );
+  }
+
+  getDocument(id:any) {
+    return this.http.get<any>(this.baseUrl + '/document/' + id).pipe(map((document: any) => {
+      // alert("documents fetched");
       return document;
     }),
       catchError(this.handleError)
@@ -39,18 +45,16 @@ export class UploadDocumentService {
   }
 
   getReviwerDocument() {
-    debugger;
     return this.http.get<any>(this.baseUrl + '/document/').pipe(map((document: any) => {
-      alert("documents fetched");
+      // alert("documents fetched");
       return document;
     }),
       catchError(this.handleError)
     );
   }
 
-  updateFile(file: any) {
-    debugger;
-    return this.http.put<any>(this.baseUrl + '/document/:id', file)
+  updateFile(id:any,file:any,name:any) {
+    return this.http.put<any>(this.baseUrl + '/document/' + id, file,name)
       .pipe(map((document: any) => {
         alert("document updated successfully");
 
@@ -61,7 +65,6 @@ export class UploadDocumentService {
   }
 
   deleteFile(_id: any) {
-    // debugger;
     return this.http.delete<any>(this.baseUrl + '/document/' + _id, this.httpOptions).pipe(
     catchError(this.handleError)
     )

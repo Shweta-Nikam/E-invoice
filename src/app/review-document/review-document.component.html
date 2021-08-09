@@ -1,0 +1,63 @@
+<div class="container documentList">
+    <table>
+        <tr>
+            <th>Sr.No.</th>
+            <th>FileName</th>
+            <th>Path</th>
+            <th>Status</th>
+
+            <th>Action</th>
+        </tr>
+        <tr *ngFor="let doc of documents;let i=index">
+            <td>{{ i+1 }}</td>
+            <td>{{doc.filename }} </td>
+            <td>{{doc.file}}</td>
+            <td>{{doc.status}}</td>
+
+            <td>
+                <div class="row buttons">
+                    <!-- <input style="display: none" type="file" (change)="onFileupdate($event,doc._id)" #hiddenfileinput>
+                    <button (click)="hiddenfileinput.click()" class="button">
+                        Update</button>
+
+                    <button class="button del" (click)="deleteFile(doc._id)">
+                        Delete
+                    </button> -->
+                    <button *ngIf="doc.status == 'pending'" type="button del"(click)="openPopoup(doc._id)" >
+                        Approve
+                       </button>
+                    
+                </div>
+
+            </td>
+            <div class="overlay" *ngIf="popup">
+                <div class="popup">
+                    <a class="close" (click)="popup = false">&times;</a>
+                    <div class="content">
+                    Do you really want to update status as Approved for this file?
+                    </div>
+                    <button class="button del" (click)="statusApprove()">
+                        ok
+                    </button> 
+                     <button class="button del" (click)="popup = false">
+                        Cancel
+                    </button> 
+                </div>
+            </div>
+        </tr>
+    </table>
+</div>
+<!-- <div class="overlay" *ngIf="popup">
+	<div class="popup">
+		<a class="close" (click)="popup = false">&times;</a>
+		<div class="content">
+		you have selected this event
+		</div>
+        <button class="button del" (click)="statusApprove(doc._id)">
+            ok
+        </button> 
+         <button class="button del" (click)="popup = false">
+            Cancel
+        </button> 
+	</div>
+</div> -->

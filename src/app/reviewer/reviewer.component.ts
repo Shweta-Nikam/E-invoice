@@ -40,12 +40,12 @@ export class ReviewerComponent implements OnInit {
         .subscribe(
           (userdata) => {
             console.log(userdata);
-            alert("register successfully");
+            // alert("register successfully");
           
               this.router.navigate(['/login']);
           },
           (error) => {
-            alert(error.error.message);
+            // alert(error.error.message);
           });
     }
   }
