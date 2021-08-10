@@ -26,7 +26,7 @@
         <tr>
             <th>Sr.No.</th>
             <th>FileName</th>
-            <th>Path</th>
+            <!-- <th>Path</th> -->
             <th>Status</th>
 
             <th>Action</th>
@@ -34,7 +34,7 @@
         <tr *ngFor="let doc of documents;let i=index">
             <td>{{ i+1 }}</td>
             <td>{{doc.filename }} </td>
-            <td>{{doc.file}}</td>
+            <!-- <td>{{doc.file}}</td> -->
             <td>{{doc.status}}</td>
 
             <td>
@@ -42,12 +42,12 @@
                     <!-- <input style="display: none" type="file" (change)="onFileupdate($event,doc._id)" #hiddenfileinput>
                     <button (click)="hiddenfileinput.click()" class="button">
                         Update</button> -->
-                        <button class="button view" (click)="showFile(doc)">
-                            View
-                        </button>
+                    <button class="button view" (click)="showFile(doc)">
+                        View
+                    </button>
 
                     <button type="button" class="button" data-toggle="modal" data-target="#exampleModal"
-                        (click)="showModal(i)">
+                        (click)="showModal(i,doc)">
                         Update
                     </button>
 
@@ -61,30 +61,48 @@
             <div class="overlay" *ngIf="showFileModal">
                 <div class="popup">
                     <!-- <a class="close" (click)="showFileModal = false">&times;</a> -->
-                   <div class="container">
-                       <div class="row" style="display: inline-flex;">
-                           <div>
-                               FileName:
-                           </div>
-                           <div style="font-weight: bold;">
-                            {{doc.filename}}
-                        </div>
-                       </div>
-                   </div>
-                       <div class="container">
-
-                       <div class="row" style="display: inline-flex;" >
-                        <div>
-                            Path:
-                        </div>
-                        <div style="font-weight: bold;">
-                         {{doc.file}}
-                     </div>
-                    </div>
-                   </div>
-                     <button class="button del" (click)="showFileModal = false">
+                    <table class="table">
+                        <tr>
+                            <th>Filename</th>
+                            <td>{{doc.filename}}</td>
+                        </tr>
+                        <tr>
+                            <th>Path</th>
+                            <td> {{doc.file}}</td>
+                        </tr>
+                        <tr>
+                            <th>stamp</th>
+                            <td><div  style="word-wrap: anywhere;">
+                                {{doc.signature}}
+                            </div> 
+</td>
+                        </tr>
+                    </table>
+                    
+                   <button class="button verify" (click)="showVerifyPopup(doc._id)">
+                    Verify
+                </button>
+                    <button class="button showfileBut" (click)="showFileModal = false">
                         Cancel
-                    </button> 
+                    </button>
+                </div>
+            </div>
+
+            <div class="overlay" *ngIf="showVerify">
+                <div class="message">
+                    <!-- <a class="close" (click)="showFileModal = false">&times;</a> -->
+               <div>
+                <div style="text-align: center;" >
+                    Your document stamp is valid
+                </div>   
+                <!-- <div *ngIf="doc.status == false" >
+                    Your document has been tampered
+                </div>  -->
+               </div>
+                  
+                    <button class="button cancel" (click)="showVerify = false">
+                        Cancel
+                    </button>
                 </div>
             </div>
             <!-- -----Modal------ -->
@@ -99,24 +117,26 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form  [formGroup]="uploadForm" >
+                            <form [formGroup]="uploadForm">
                                 <div class="name">
                                     <label for="name">Name</label>
-                                    <input id="name" name="filename" formControlName="filename2" type="text" class="form-control">
+                                    <input id="name" name="filename" formControlName="filename" type="text"
+                                        class="form-control">
                                 </div>
-                            
+
                                 <div class="fileselect">
                                     <label for="file">File</label>
-                                    <input id="file" type="file" formControlName="file" class="form-control" (change)="onFileupdate($event,doc._id)"  >
+                                    <input id="file" type="file" class="form-control"
+                                        (change)="onFileupdate($event,doc._id)">
                                 </div>
-                            
+
                                 <!-- <button class="btn btn-primary submitfile" >Submit</button> -->
                             </form>
 
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                (click)="showModal(i)">Close</button>
+                               >Close</button>
                             <button type="button" class="btn btn-primary" (click)="UpdateFile(doc._id,doc)">Save
                                 changes</button>
                         </div>

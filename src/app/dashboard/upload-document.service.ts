@@ -53,15 +53,25 @@ export class UploadDocumentService {
     );
   }
 
-  updateFile(id:any,file:any,name:any) {
-    return this.http.put<any>(this.baseUrl + '/document/' + id, file,name)
+  updateFile(id:any,file:any) {
+    return this.http.put<any>(this.baseUrl + '/document/' + id, file)
       .pipe(map((document: any) => {
-        alert("document updated successfully");
+        // alert("document updated successfully");
 
         return document;
       }),
         catchError(this.handleError)
       );
+  }
+
+  verifyFile(id:any){
+    return this.http.put<any>(this.baseUrl + '/document/verify/' + id, {})
+    .pipe(map((document: any) => {
+      alert("document verified successfully");
+      return document;
+    }),
+      catchError(this.handleError)
+    );
   }
 
   deleteFile(_id: any) {

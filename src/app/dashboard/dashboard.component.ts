@@ -24,12 +24,13 @@ export class DashboardComponent implements OnInit {
   selectedIndex: any = null;
   document: Document;
   doc:any;
+  showVerify:boolean=false;
   constructor(public router: Router, private fb: FormBuilder, private http: HttpClient,
     private uploadDoc: UploadDocumentService, private loginservice: LoginService) {
     this.uploadForm = this.fb.group({
       document: new FormControl('', [Validators.required, Validators.minLength(3)]),
       file: new FormControl('', [Validators.required]),
-      filename2: new FormControl('', [Validators.required]),
+      filename: new FormControl('', [Validators.required]),
 
     });
     this.documents = new Array<Document>();
@@ -41,7 +42,7 @@ export class DashboardComponent implements OnInit {
     this.uploadForm = this.fb.group({
       document: new FormControl('', [Validators.required, Validators.minLength(3)]),
       file: new FormControl('', [Validators.required]),
-      filename2: new FormControl('', [Validators.required]),
+      filename: new FormControl('', [Validators.required]),
 
     });
   }
@@ -120,44 +121,52 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  onFileupdate(event: any, id: number) {
+  onFileupdate(event: any, id: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      const filename = this.uploadForm.value.filename2;
+      const filename = this.uploadForm.value.filename;
       // const name = event.target.filename;
       this.UpdateFile(id,file);
       this.uploadForm.patchValue({
-        fileSource: file
+        document: file,
       });
     }
   }
 
-  UpdateFile(id:any,file: any) {
+  UpdateFile(id:any,file:any) {
     const formData = new FormData();
     formData.append('document', this.uploadForm.value.document);
-    formData.append('filename', this.uploadForm.value.filename2)
-    const name= this.uploadForm.value.filename2;
+    formData.append('filename', this.uploadForm.value.filename);
+    const name= this.uploadForm.value.filename;
     let getToken = localStorage.getItem('token');
     if (getToken) {
-      this.uploadDoc.updateFile(id,formData,name).subscribe((document:any) => {
+      this.uploadDoc.updateFile(id,formData).subscribe((document:any) => {
         console.log(document);
-        this.documents[this.selectedIndex].filename=name;
-        this.documents[this.selectedIndex].file=this.uploadForm.value.file;
+        // this.documents[this.selectedIndex].filename=name;
+        // this.documents[this.selectedIndex].file=this.uploadForm.value.file;
+        this.closeModal();
         this.getAllDocuments();
-        this.showModal1 = !this.showModal1;
+
       },
         (error) => {
         });
     }
+    // this.showModal1 = false;
+
   }
 
 // -----show update modal--------
-showModal(index:number){
+showModal(index:number,file:any){
   this.selectedIndex = index;
+  this.uploadForm.patchValue({
+    filename : file.filename
+  })
   this.showModal1 = !this.showModal1;
 
 }
-
+closeModal(){
+  this.showModal1 = false;
+}
 
 getDocument(id:any){
   let getToken = localStorage.getItem('token');
@@ -178,9 +187,24 @@ getDocument(id:any){
 }
 showFile(file:any){
   // this.getDocument(id);
+  let getToken = localStorage.getItem('token');
+  if (getToken) {
   this.doc=file;
+  }
   this.showFileModal = !this.showFileModal;
 }
+
+showVerifyPopup(id:any){
+  // this.getDocument(id);
+  this.uploadDoc.verifyFile(id).subscribe((document:any) => {
+    console.log(document);
+  },
+  (error) => {
+  });
+
+  this.showVerify = !this.showVerify;
+}
+
   // logout() {
   //   let removeToken = localStorage.removeItem('token');
   //   if (removeToken !== null) {
